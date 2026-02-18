@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Country RTT Map</title>
+
+  <!-- Fomantic UI -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- CSV parser -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="ui top attached menu">
+    <div class="header item">Country RTT Map</div>
+
+    <div class="item">
+      <div class="ui labeled input">
+        <div class="ui label">Source</div>
+        <select id="srcSelect" class="ui search dropdown"></select>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="ui labeled input">
+        <div class="ui label">Metric</div>
+        <select id="metricSelect" class="ui dropdown">
+          <option value="average_ms" selected>average_ms</option>
+          <option value="mean_ms">mean_ms</option>
+          <option value="p50_ms">p50_ms</option>
+          <option value="p90_ms">p90_ms</option>
+          <option value="p95_ms">p95_ms</option>
+          <option value="min_ms">min_ms</option>
+          <option value="max_ms">max_ms</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="right menu">
+      <a class="item" id="configBtn"><i class="sliders horizontal icon"></i> Scale</a>
+    </div>
+  </div>
+
+  <div class="ui bottom attached segment map-segment">
+    <div id="map"></div>
+    <div id="mapLoading" class="map-loading">
+      <div class="ui active inline loader"></div>
+      <div class="map-loading-text">Updating map...</div>
+    </div>
+  </div>
+
+  <div class="ui mini modal" id="scaleModal">
+    <div class="header">Global color scale</div>
+    <div class="content">
+      <form class="ui form">
+        <div class="field">
+          <div class="ui toggle checkbox">
+            <input type="checkbox" id="autoScale" checked>
+            <label>Auto (global percentiles)</label>
+          </div>
+        </div>
+
+        <div class="two fields">
+          <div class="field">
+            <label>Green at (ms)</label>
+            <input type="number" id="scaleMin" min="0" step="1" value="20">
+          </div>
+          <div class="field">
+            <label>Red at (ms)</label>
+            <input type="number" id="scaleMax" min="1" step="1" value="300">
+          </div>
+        </div>
+
+        <div class="two fields">
+          <div class="field">
+            <label>Auto low percentile</label>
+            <input type="number" id="pLow" min="0" max="50" step="0.1" value="5">
+          </div>
+          <div class="field">
+            <label>Auto high percentile</label>
+            <input type="number" id="pHigh" min="50" max="100" step="0.1" value="95">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Scale transform</label>
+          <select id="scaleTransform" class="ui dropdown">
+            <option value="linear" selected>linear</option>
+            <option value="log">log</option>
+          </select>
+          <div class="ui tiny message" style="margin-top:.6em;">
+            Log scale helps if RTTs have a long tail.
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Missing / invalid RTT color</label>
+          <input type="text" id="missingColor" value="#dddddd">
+        </div>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui cancel button">Cancel</div>
+      <div class="ui primary button" id="applyScaleBtn">Apply</div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

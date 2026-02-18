@@ -1,0 +1,58 @@
+html, body { height: 100%; margin: 0; }
+#map { width: 100%; height: calc(100vh - 52px); }
+.leaflet-container { background: #f7f7f7; }
+.map-segment {
+  position: relative;
+  padding: 0 !important;
+}
+.map-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 1000;
+}
+.map-loading.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+.map-loading-text {
+  font-size: 13px;
+  color: rgba(0,0,0,.7);
+}
+.ui.top.attached.menu {
+  position: relative;
+  z-index: 1100;
+}
+.ui.dropdown .menu {
+  z-index: 1200 !important;
+}
+.legend {
+  background: rgba(255,255,255,.92);
+  padding: 10px 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 14px rgba(0,0,0,.08);
+  line-height: 1.2;
+}
+.legend .bar {
+  height: 10px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #00b050, #ff0000);
+  margin: 8px 0 6px;
+}
+.legend .row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: rgba(0,0,0,.7);
+}
